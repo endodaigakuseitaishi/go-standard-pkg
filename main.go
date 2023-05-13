@@ -2,26 +2,46 @@ package main
 
 import (
 	"fmt"
-	"regexp"
+	"sync"
+	// "regexp"
 	// "strings"
 	// "strconv"
-	// "time"
+	"time"
 	// "os"
 	// "log"
-
 )
 
+var st struct{A, B, C int}
+
+var mutex *sync.Mutex
+
+func UpdateAndPrint(n int) {
+
+	mutex.Lock()
+
+	st.A = n
+	time.Sleep(time.Millisecond)
+	st.B = n
+	time.Sleep(time.Millisecond)
+	st.C = n
+	time.Sleep(time.Millisecond)
+	fmt.Println(st)
+
+	mutex.Unlock()
+}
+
 func main() {
-	match, _ := regexp.MatchString("A", "AVSSS")
-	fmt.Println(match)
-
-	re1, _ := regexp.Compile("A")
-	match = re1.MatchString("AVSSS")
-	fmt.Println(match)
-
-	re2 := regexp.MustCompile("A")
-	match = re2.MatchString("VSSS")
-	fmt.Println(match)
-
+	mutex = new(sync.Mutex)
 	
+	for i := 0; i < 10; i++ {
+		go func() {
+			for i:=0; i < 1000; i++ {
+				UpdateAndPrint(i)
+			}
+		}()
+	}
+
+	for {
+
+	}
 }
