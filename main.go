@@ -2,16 +2,27 @@ package main
 
 import (
 	"fmt"
-	"strconv"
+	"strings"
+	// "strconv"
 	// "time"
 	// "os"
 	// "log"
 )
 
 func main() {
-	bt := true
-	fmt.Printf("%T\n", strconv.FormatBool(bt))
+	s1 := strings.Index("AXSWEDFR", "R")
+	fmt.Println(s1)
 
-	i2 := strconv.Itoa(100)
-	fmt.Printf("%v, %T\n", i2, i2)
+	s2 := strings.LastIndex("AXSWEDFR", "R")
+	fmt.Println(s2)
+
+	s3 := strings.Contains("AQDCBXNE", "E")
+	fmt.Println(s3)
+
+	s4 := strings.Count("AQDCBXNEAA", "A")
+	fmt.Println(s4)
+
+	s5 := strings.Replace("AQDCBXNEAA", "A", "B", -1)
+	s6 := strings.Replace("AQDCBXNEAA", "A", "B", 1)
+  fmt.Println(s5, s6)
 }
