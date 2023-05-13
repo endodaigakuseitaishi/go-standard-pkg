@@ -31,17 +31,27 @@ func UpdateAndPrint(n int) {
 }
 
 func main() {
-	mutex = new(sync.Mutex)
-	
-	for i := 0; i < 10; i++ {
-		go func() {
-			for i:=0; i < 1000; i++ {
-				UpdateAndPrint(i)
-			}
-		}()
-	}
+	wg := new(sync.WaitGroup)
+	wg.Add(3)
 
-	for {
+	go func() {
+		for i := 0; i < 100; i++ {
+      fmt.Println(1)
+    }
+		wg.Done()
+	}()
+	go func() {
+    for i := 0; i < 100; i++ {
+      fmt.Println(2)
+    }
+		wg.Done()
+  }()
+	go func() {
+    for i := 0; i < 100; i++ {
+      fmt.Println(3)
+    }
+		wg.Done()
+  }()
 
-	}
+	wg.Wait()
 }
