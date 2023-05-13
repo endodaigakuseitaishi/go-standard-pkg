@@ -1,41 +1,27 @@
 package main
 
 import (
-	// "fmt"
-	"os"
+	"fmt"
+	"time"
+	// "os"
 	// "log"
 )
 
 func main() {
-	// os.Exit(1)
-	// fmt.Println(os.Args)
+	t2 := time.Date(2020, 5, 10, 12, 0, 0, 0, time.Local)
+	fmt.Println(t2)
+	fmt.Println(time.Hour)
 
-	// _, err := os.Open("test.txt")
-	// if err!= nil {
-  //   fmt.Println(err)
-	// 	log.Fatal(err)
-  // }
+	t3 := time.Now()
+	fmt.Println(t3)
+	d2 := t3.Sub(t2)
+	fmt.Println(d2)
 
-	// fmt.Println(os.Args[0])
-	// fmt.Println(os.Args[1])
-	// fmt.Println(os.Args[2])
-	// fmt.Println(os.Args[3])
+	fmt.Println(t2.After(t3))
+	fmt.Println(t2.Before(t3))
+	fmt.Println(t3.Before(t2))
+	fmt.Println(t3.After(t2))
 
-	// fmt.Println("length=%d\n", len(os.Args))
-
-	// for i, v := range os.Args {
-	// 	fmt.Println(i, v)
-	// }
-
-	// f, err := os.Open("test.txt")
-	// if err!= nil {
-  //   log.Fatal(err)
-  // }
-	// defer f.Close()
-
-	f, _ := os.Create("test.txt")
-	f.Write([]byte("hello world"))
-	f.WriteAt([]byte("Go"), 6)
-	f.Seek(0, os.SEEK_END)
-	f.WriteString("foo")
+	time.Sleep(5*time.Second)
+	fmt.Println("aaaaaaa")
 }
