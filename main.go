@@ -2,45 +2,46 @@ package main
 
 import (
 	"fmt"
-	"sort"
+	// "sort"
 	// "sync"
 	// "regexp"
 	// "strings"
 	// "strconv"
-	// "time"
+	"time"
 	// "os"
 	// "log"
 	// "encoding/json"
+	"context"
 )
 
-type Entry struct {
-	Name string
-	Value int
+func longProcess(ctx context.Context, ch chan string) {
+	fmt.Println("開始")
+	time.Sleep(2 * time.Second)
+	fmt.Println("終了")
+	ch <- "実行結果"
 }
 
-
 func main() {
-	i := []int{3, 6, 4, 2, 8, 5, 9, 1, 7}
-	s := []string{"x", "b", "c", "d", "e", "d", "a"}
+	ch := make(chan string)
+	ctx := context.Background()
 
-	fmt.Println(i, s)
-	sort.Ints(i)
-	sort.Strings(s)
-	fmt.Println(i, s)
+	ctx, cancel := context.WithTimeout(ctx, 3*time.Second)
+	defer cancel()
 
-	el := []Entry {
-		{"w", 1023},
-		{"b", 323},
-    {"v", 3435},
-    {"q", 5},
-    {"u", 544},
-    {"c", 686},
+	go longProcess(ctx, ch)
+
+L: 
+  for {
+		select {
+			case <-ctx.Done():
+				fmt.Println("=========Error=========")
+				fmt.Println(ctx.Err())
+        break L
+			case s := <-ch:
+				fmt.Println(s)
+				fmt.Println("success")
+				break L
+		}
 	}
-	// fmt.Println(el)
-	fmt.Printf("%T", el)
-
-	// sort.Slice(el, func(i, j int) bool {return el[i].Value < el[j].Value})
-	// fmt.Println("--------------------------------------------------------")
-	// fmt.Println(el)
-	// fmt.Println("--------------------------------------------------------")
+	fmt.Println("終了")
 }
