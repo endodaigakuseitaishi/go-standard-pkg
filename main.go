@@ -2,45 +2,45 @@ package main
 
 import (
 	"fmt"
+	"sort"
 	// "sync"
 	// "regexp"
 	// "strings"
 	// "strconv"
-	"time"
+	// "time"
 	// "os"
 	// "log"
-	"encoding/json"
+	// "encoding/json"
 )
 
-type A struct{}
-
-type User struct {
-	ID int `json:"id,omitempty"`
-	Name string `json:"name,omitempty"`
-	Email string `json:"email"`
-	CreatedAt time.Time `json:"created"`
-	A *A `json:"A,omitempty"`
+type Entry struct {
+	Name string
+	Value int
 }
 
-func (u User) MarshalJson() ([]byte, error) {
-	v, err := json.Marshal(&struct {
-		Name string
-	}{
-		Name: "Mr. " + u.Name,
-	})
-	return v, err
-}
 
 func main() {
-	u := new(User)
-	u.ID = 1
-	u.Name = "test"
-	u.Email = "hzdkv@example.com"
-	u.CreatedAt = time.Now()
+	i := []int{3, 6, 4, 2, 8, 5, 9, 1, 7}
+	s := []string{"x", "b", "c", "d", "e", "d", "a"}
 
-	bs, err := json.Marshal(u)
-	if err!= nil {
-    panic(err)
-  }
-	fmt.Println(string(bs))
+	fmt.Println(i, s)
+	sort.Ints(i)
+	sort.Strings(s)
+	fmt.Println(i, s)
+
+	el := []Entry {
+		{"w", 1023},
+		{"b", 323},
+    {"v", 3435},
+    {"q", 5},
+    {"u", 544},
+    {"c", 686},
+	}
+	// fmt.Println(el)
+	fmt.Printf("%T", el)
+
+	// sort.Slice(el, func(i, j int) bool {return el[i].Value < el[j].Value})
+	// fmt.Println("--------------------------------------------------------")
+	// fmt.Println(el)
+	// fmt.Println("--------------------------------------------------------")
 }
