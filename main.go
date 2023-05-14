@@ -2,56 +2,45 @@ package main
 
 import (
 	"fmt"
-	"sync"
+	// "sync"
 	// "regexp"
 	// "strings"
 	// "strconv"
 	"time"
 	// "os"
 	// "log"
+	"encoding/json"
 )
 
-var st struct{A, B, C int}
+type A struct{}
 
-var mutex *sync.Mutex
+type User struct {
+	ID int `json:"id,omitempty"`
+	Name string `json:"name,omitempty"`
+	Email string `json:"email"`
+	CreatedAt time.Time `json:"created"`
+	A *A `json:"A,omitempty"`
+}
 
-func UpdateAndPrint(n int) {
-
-	mutex.Lock()
-
-	st.A = n
-	time.Sleep(time.Millisecond)
-	st.B = n
-	time.Sleep(time.Millisecond)
-	st.C = n
-	time.Sleep(time.Millisecond)
-	fmt.Println(st)
-
-	mutex.Unlock()
+func (u User) MarshalJson() ([]byte, error) {
+	v, err := json.Marshal(&struct {
+		Name string
+	}{
+		Name: "Mr. " + u.Name,
+	})
+	return v, err
 }
 
 func main() {
-	wg := new(sync.WaitGroup)
-	wg.Add(3)
+	u := new(User)
+	u.ID = 1
+	u.Name = "test"
+	u.Email = "hzdkv@example.com"
+	u.CreatedAt = time.Now()
 
-	go func() {
-		for i := 0; i < 100; i++ {
-      fmt.Println(1)
-    }
-		wg.Done()
-	}()
-	go func() {
-    for i := 0; i < 100; i++ {
-      fmt.Println(2)
-    }
-		wg.Done()
-  }()
-	go func() {
-    for i := 0; i < 100; i++ {
-      fmt.Println(3)
-    }
-		wg.Done()
-  }()
-
-	wg.Wait()
+	bs, err := json.Marshal(u)
+	if err!= nil {
+    panic(err)
+  }
+	fmt.Println(string(bs))
 }
